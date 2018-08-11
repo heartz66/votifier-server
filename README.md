@@ -11,6 +11,21 @@
 - `privateKey` - Private key of the public key used on voting websites.
 - `port` - Default 8192 if omitted.
 
+# Events
+
+### vote
+- `username` - Minecraft username used for voting
+- `server` - Voting website used
+- `ip` - Voters IP address
+- `date` - Date of vote
+
+Emitted when you successfully received a Votifier vote.
+
+### error
+- `err` - An `Error` object
+
+Emitted when an error occurs. If this event isn't handled, the program will crash.
+
 **Example:**
 
 ```js
@@ -47,4 +62,8 @@ votifier.on('vote', function (username, server, ip, date) {
     console.log(server);
     console.log(ip);
     console.log(date);
+});
+
+votifier.on('error', function (err) {
+    console.error(err);
 });

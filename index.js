@@ -15,12 +15,22 @@ function VotifierServer(privateKey, port) {
     this.server.on('connection', (socket) => {
         socket.setTimeout(5000);
 
-        socket.on('timeout', () => {
+        socket.on('error', function (err) {
+            self.emit('error', err);
+        });
+
+        socket.on('timeout', function () {
             socket.end();
         });
 
         socket.on('data', function (data) {
-            let message = self.key.decrypt(data, 'utf8');
+            let message;
+
+            try {
+                message = self.key.decrypt(data, 'utf8');
+            } catch (err) {
+                self.emit('error', err);
+            }
 
             message = message.split('\n');
 
