@@ -12,7 +12,7 @@ function VotifierServer(privateKey, port) {
 
     this.server = net.createServer();
 
-    this.server.on('connection', (socket) => {
+    this.server.on('connection', function (socket) {
         socket.setTimeout(5000);
 
         socket.on('error', function (err) {
