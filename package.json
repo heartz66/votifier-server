@@ -8,7 +8,7 @@
     "url": "https://github.com/Heartz66/votifier-server/issues"
   },
   "dependencies": {
-    "node-rsa": "1.0.1"
+    "node-rsa": "1.0.2"
   },
   "license": "MIT",
   "repository": {
