@@ -24,23 +24,33 @@ function VotifierServer(privateKey, port) {
         });
 
         socket.on('data', function (data) {
+            if (data.length !== 256) {
+                self.emit('error', new Error('Invalid length.'));
+                socket.end('Invalid length.');
+                socket.destroy();
+            }
+
             let message;
 
             try {
                 message = self.key.decrypt(data, 'utf8');
             } catch (err) {
                 self.emit('error', err);
+                socket.end('Received invalid message.');
+                socket.destroy();
             }
 
             message = message.split('\n');
 
             if (message[0] !== 'VOTE') {
-                self.emit('error', new Error('Received invalid message.'));
+                self.emit('error', err);
+                socket.end('Received invalid message.');
+                socket.destroy();
             }
 
             self.emit('vote', message[2], message[1], message[3], new Date(message[4]));
-
             socket.end();
+            socket.destroy();
         });
 
         socket.write('VOTIFIER 1.9\n');
